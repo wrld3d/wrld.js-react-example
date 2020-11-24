@@ -4,7 +4,7 @@
 
 # wrld.js in React
 
-This is an example of how [wrld.js](https://github.com/wrld3d/wrld.js) can be used in a [React](https://reactjs.org/) app. For simplicity this example has been created using [Create React App](https://github.com/facebook/create-react-app).
+This is an example of how [wrld.js](https://github.com/wrld3d/wrld.js) can be used in a [React](https://reactjs.org/) app using [wrld-react](https://www.npmjs.com/package/wrld-react). For simplicity this example has been created using [Create React App](https://github.com/facebook/create-react-app).
 
 ### Requirements
 
@@ -41,113 +41,59 @@ In a new directory where your project will be contained, run:
 npm init react-app <project-name-here>
 ```
 
-#### Install wrld.js
+#### Install wrld-react
 
 ```sh
-npm install --save wrld.js
+npm install --save wrld-react
 ```
 
 #### Make some changes
 
-Create the file [`src/WrldMap.js`](/example/src/WrldMap.js)
+Update the file [`src/App.js`](/example/src/App.js)
 
 Don't forget to insert your [WRLD API key](https://accounts.wrld3d.com/#/tab-keys).
 
 ```js
-/* WrldMap.js */
-
 /* globals WrldIndoorControl */
 
-// import the useEffect hook which we use to create the map once the element has mounted.
-import { useEffect } from 'react';
+import { WrldMap } from "wrld-react";
 
-// import wrlds.js
-import Wrld from 'wrld.js';
-
-import './WrldMap.css';
-
-function WrldMap() {
-
-  useEffect(() => {
-    // Create the map once the 'map' element has mounted.
-    const map = Wrld.map("map", "your_api_key_here", {
-      center: [56.458598, -2.969868],
-      indoorsEnabled: true
-    });
-
-    // Optionally use the WrldIndoorControl widget.
-    const indoorControl = new WrldIndoorControl("wrld-indoor-control", map);
-
-    return () => {
-      // This will find the map element and remove it since there is currently no API point to destroy a map.
-      const mapElement = document.getElementById("map");
-      if (mapElement) {
-        mapElement.childNodes.forEach((child) => {
-          if (child.id.indexOf("wrld-map-container") === 0) {
-            mapElement.removeChild(child);
-          }
-        });
-      }
-    };
-  });
-  
+const App = () => {
   return (
-    <div className="map-container">
-      <div id="wrld-indoor-control"/>
-      <div id="map"/>
+    <div>
+      <WrldMap
+        apiKey={"your_api_key_here"}
+        containerStyle={{
+          width: "600px",
+          height: "400px"
+        }}
+        mapOptions={{
+          center: [56.459604, -2.977816],
+          indoorsEnabled: true
+        }}
+        onMapMount={(map) => {
+          new WrldIndoorControl("wrld-indoor-control", map);
+        }}
+      >
+        <div
+          id={"wrld-indoor-control"}
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            bottom: "40px"
+          }}
+        >
+        </div>
+      </WrldMap>
     </div>
   );
-}
-
-export default WrldMap;
-```
-
-Create the file [`src/WrldMap.css`](/example/src/WrldMap.css)
-
-```css
-/* WrldMap.css */
-
-.map-container {
-  margin: auto;
-  position: relative;
-  width: 600px;
-  height: 400px;
-}
-
-#map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-#wrld-indoor-control {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  bottom: 40px;
-}
-```
-
-Update the file [`src/App.js`](/example/src/App.js)
-
-```js
-/* App.js */
-
-import WrldMap from "./WrldMap";
-
-function App() {
-  
-  return (
-    <WrldMap/>
-  );
-}
+};
 
 export default App;
 ```
 
-Remove the file [`src/App.css`] unless you plan to use it later.
+Remove the file `src/App.css` unless you plan to use it later.
 
 
 Update [`public/index.html`](/example/public/index.html)
