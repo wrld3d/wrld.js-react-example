@@ -11,8 +11,7 @@
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",
     "web-vitals": "^0.2.4",
-    "wrld-react": "^0.1.2261",
-    "wrld.js": "^0.1.2255"
+    "wrld-react": "^0.1.2261"
   },
   "scripts": {
     "start": "react-scripts start",
